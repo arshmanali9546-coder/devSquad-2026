@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator - Tailwind Project</title>
+    <link rel="stylesheet" href="./output.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;0,800;1,800&display=swap');
+        body { font-family: 'Poppins', sans-serif; }
+        
+        /* Custom shape for the bottom right corner */
+        .card-shape {
+            border-bottom-right-radius: 100px;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 flex items-center justify-center min-h-screen p-4">
+
+    <main class="bg-white p-6 md:p-12 rounded-3xl card-shape shadow-sm max-w-lg w-full">
+        
+        <div class="pr-14">
+            <div class="flex gap-4 md:gap-8 mb-8" id="input-container">
+            <div class="flex flex-col gap-1 w-1/3 ">
+                <label class="text-xs font-bold tracking-[0.2em] text-slate-500 uppercase transition-colors" id="label-day">Day</label>
+                <input type="number" id="input-day" placeholder="DD" 
+                    class="border border-slate-200 rounded-lg p-3 text-xl font-bold focus:outline-none focus:border-purple-600 cursor-pointer placeholder:text-slate-400">
+                <p id="error-day" class="text-[10px] italic text-red-500 mt-1 hidden"></p>
+            </div>
+
+            <div class="flex flex-col gap-1 w-1/3">
+                <label class="text-xs font-bold tracking-[0.2em] text-slate-500 uppercase transition-colors" id="label-month">Month</label>
+                <input type="number" id="input-month" placeholder="MM" 
+                    class="border border-slate-200 rounded-lg p-3 text-xl font-bold focus:outline-none focus:border-purple-600 cursor-pointer placeholder:text-slate-400">
+                <p id="error-month" class="text-[10px] italic text-red-500 mt-1 hidden"></p>
+            </div>
+
+            <div class="flex flex-col gap-1 w-1/3">
+                <label class="text-xs font-bold tracking-[0.2em] text-slate-500 uppercase transition-colors" id="label-year">Year</label>
+                <input type="number" id="input-year" placeholder="YYYY" 
+                    class="border border-slate-200 rounded-lg p-3 text-xl font-bold focus:outline-none focus:border-purple-600 cursor-pointer placeholder:text-slate-400">
+                <p id="error-year" class="text-[10px] italic text-red-500 mt-1 hidden"></p>
+            </div>
+        </div>
+        </div>
+
+        <div class="relative flex items-center justify-center md:justify-end my-8 h-16">
+  <hr class="w-full border-t border-slate-200">
+  
+  <button id="calc-btn" 
+    class="absolute z-10 bg-purple-600 hover:bg-black p-4 md:p-5 rounded-full transition-all active:scale-95 shadow-md">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 46 44" fill="none" stroke="white" stroke-width="3">
+      <path d="M1 22.019C8.333 21.686 23 25.616 23 44M23 44V0M23 44C23 25.616 37.667 21.686 45 22.019"/>
+    </svg>
+  </button>
+</div>
+
+        <div class="flex flex-col gap-1 text-5xl md:text-7xl italic font-[800]">
+            <p><span id="display-years" class="text-purple-600">--</span> years</p>
+            <p><span id="display-months" class="text-purple-600">--</span> months</p>
+            <p><span id="display-days" class="text-purple-600">--</span> days</p>
+        </div>
+    </main>
+
+    <script>
+        const btn = document.getElementById('calc-btn');
+
+        // Logic to animate numbers from 0 to target
+        function animateValue(id, end) {
+            const obj = document.getElementById(id);
+            let start = 0;
+            let duration = 1000;
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerText = Math.floor(progress * end);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Validation logic
+        function validate() {
+            let isValid = true;
+            const dayIn = document.getElementById('input-day');
+            const monthIn = document.getElementById('input-month');
+            const yearIn = document.getElementById('input-year');
+            const today = new Date();
+
+            const inputs = [
+                { el: dayIn, err: 'error-day', label: 'label-day', max: 31, msg: 'Must be a valid day' },
+                { el: monthIn, err: 'error-month', label: 'label-month', max: 12, msg: 'Must be a valid month' },
+                { el: yearIn, err: 'error-year', label: 'label-year', max: today.getFullYear(), msg: 'Must be in the past' }
+            ];
+
+            inputs.forEach(item => {
+                const val = parseInt(item.el.value);
+                const errorEl = document.getElementById(item.err);
+                const labelEl = document.getElementById(item.label);
+
+                // Reset state
+                item.el.classList.remove('border-red-500');
+                labelEl.classList.remove('text-red-500');
+                errorEl.classList.add('hidden');
+
+                if (!item.el.value) {
+                    errorEl.innerText = "This field is required";
+                    errorEl.classList.remove('hidden');
+                    item.el.classList.add('border-red-500');
+                    labelEl.classList.add('text-red-500');
+                    isValid = false;
+                } else if (val < 1 || val > item.max) {
+                    errorEl.innerText = item.msg;
+                    errorEl.classList.remove('hidden');
+                    item.el.classList.add('border-red-500');
+                    labelEl.classList.add('text-red-500');
+                    isValid = false;
+                }
+            });
+
+            // Extra check for invalid dates like Feb 31st
+            if (isValid) {
+                const testDate = new Date(yearIn.value, monthIn.value - 1, dayIn.value);
+                if (testDate.getMonth() + 1 != monthIn.value) {
+                    document.getElementById('error-day').innerText = "Must be a valid date";
+                    document.getElementById('error-day').classList.remove('hidden');
+                    dayIn.classList.add('border-red-500');
+                    isValid = false;
+                }
+            }
+
+            return isValid;
+        }
+
+        btn.addEventListener('click', () => {
+            if (!validate()) return;
+
+            const d = parseInt(document.getElementById('input-day').value);
+            const m = parseInt(document.getElementById('input-month').value) - 1;
+            const y = parseInt(document.getElementById('input-year').value);
+
+            const birth = new Date(y, m, d);
+            const now = new Date();
+
+            let years = now.getFullYear() - birth.getFullYear();
+            let months = now.getMonth() - birth.getMonth();
+            let days = now.getDate() - birth.getDate();
+
+            if (days < 0) {
+                months--;
+                days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+            }
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            animateValue('display-years', years);
+            animateValue('display-months', months);
+            animateValue('display-days', days);
+        });
+    </script>
+</body>
+</html>

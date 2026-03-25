@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary: hsl(180, 29%, 50%);
+  --color-bg-light: hsl(180, 52%, 96%);
+  --color-filter-tablet: hsl(180, 31%, 95%);
+  --color-dark-gray-cyan: hsl(180, 8%, 52%);
+  --color-v-dark-gray-cyan: hsl(180, 14%, 20%);
+}
+
+:root {
+  --background: hsl(180, 52%, 96%);
+  --foreground: hsl(180, 14%, 20%);
+}
+
+.dark {
+  --background: hsl(180, 14%, 10%);
+  --foreground: hsl(180, 31%, 95%);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'League Spartan', sans-serif;
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@layer components {
+  .container-custom {
+    @apply max-w-6xl mx-auto px-6 lg:px-0;
+  }
+}

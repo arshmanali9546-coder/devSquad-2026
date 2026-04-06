@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Tailwind CSS -->
+  <link rel="stylesheet" href="output.css">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+
+  <title>Tip Calculator</title>
+
+  <style>
+    body {
+      font-family: 'Space Mono', monospace;
+    }
+
+    /* Remove arrows from number input fields */
+    input::-webkit-inner-spin-button,
+    input::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+  </style>
+</head>
+
+
+<body class="bg-[#c5e4e7] min-h-screen flex flex-col items-center justify-center p-6">
+
+  <!-- Logo -->
+  <div class="mb-10">
+    <img src="./images/logo.svg" alt="Splitter Logo">
+  </div>
+
+
+  <!-- Calculator Container -->
+  <div class="bg-white rounded-xl shadow-lg p-8 w-full max-w-4xl flex flex-col md:flex-row gap-8">
+
+    <!-- LEFT SIDE : INPUTS -->
+    <div class="flex-1 space-y-6">
+
+      <!-- Bill Input -->
+      <div>
+        <label class="block mb-2 text-gray-600 font-bold">Bill</label>
+
+        <div class="relative">
+          <img src="./images/icon-dollar.svg"
+               class="absolute left-3 top-3 w-4"
+               alt="Dollar icon">
+
+          <input
+            id="bill"
+            type="number"
+            placeholder="0"
+            class="w-full bg-gray-100 text-right text-xl font-bold p-2 rounded-md outline-none focus:ring-2 focus:ring-teal-400"
+          >
+        </div>
+      </div>
+
+
+      <!-- Tip Selection -->
+      <div>
+        <label class="block mb-3 text-gray-600 font-bold">Select Tip %</label>
+
+        <div class="grid grid-cols-3 gap-3">
+
+          <button class="tip-btn bg-[#00474b] text-white py-2 rounded hover:bg-teal-400 hover:text-black transition duration-200 hover:scale-105 active:scale-95">
+            5%
+          </button>
+
+          <button class="tip-btn bg-[#00474b] text-white py-2 rounded hover:bg-teal-400 hover:text-black transition duration-200 hover:scale-105 active:scale-95">
+            10%
+          </button>
+
+          <button class="tip-btn bg-[#00474b] text-white py-2 rounded hover:bg-teal-400 hover:text-black transition duration-200 hover:scale-105 active:scale-95">
+            15%
+          </button>
+
+          <button class="tip-btn bg-[#00474b] text-white py-2 rounded hover:bg-teal-400 hover:text-black transition duration-200 hover:scale-105 active:scale-95">
+            25%
+          </button>
+
+          <button class="tip-btn bg-[#00474b] text-white py-2 rounded hover:bg-teal-400 hover:text-black transition duration-200 hover:scale-105 active:scale-95">
+            50%
+          </button>
+
+          <!-- Custom Tip -->
+          <input
+            id="custom-tip"
+            type="number"
+            placeholder="Custom"
+            class="bg-gray-100 text-right p-2 rounded outline-none focus:ring-2 focus:ring-teal-400"
+          >
+        </div>
+      </div>
+
+
+      <!-- Number of People -->
+      <div>
+        <label class="block mb-2 text-gray-600 font-bold">
+          Number of People
+        </label>
+
+        <div class="relative">
+          <img src="./images/icon-person.svg"
+               class="absolute left-3 top-3 w-4"
+               alt="Person icon">
+
+          <input
+            id="people"
+            type="number"
+            placeholder="0"
+            class="w-full bg-gray-100 text-right text-xl font-bold p-2 rounded-md outline-none focus:ring-2 focus:ring-teal-400"
+          >
+        </div>
+      </div>
+
+    </div>
+
+
+
+    <!-- RIGHT SIDE : RESULT -->
+    <div class="flex-1 bg-[#00474b] text-white rounded-xl p-6 flex flex-col justify-between">
+
+      <div class="space-y-6">
+
+        <!-- Tip Amount -->
+        <div class="flex justify-between items-center">
+
+          <div>
+            <p class="font-bold">Tip Amount</p>
+            <span class="text-sm text-gray-300">/ person</span>
+          </div>
+
+          <h2 id="tip-amount" class="text-3xl font-bold text-teal-300">
+            $0.00
+          </h2>
+
+        </div>
+
+
+        <!-- Total Amount -->
+        <div class="flex justify-between items-center">
+
+          <div>
+            <p class="font-bold">Total</p>
+            <span class="text-sm text-gray-300">/ person</span>
+          </div>
+
+          <h2 id="total-amount" class="text-3xl font-bold text-teal-300">
+            $0.00
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <!-- Reset Button -->
+      <button
+        id="reset-btn"
+        class="mt-8 bg-teal-400 text-black font-bold py-2 rounded
+               hover:bg-teal-300 transition duration-200
+               hover:scale-105 active:scale-95">
+
+        RESET
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- JavaScript File -->
+  <script src="app.js"></script>
+
+</body>
+</html>

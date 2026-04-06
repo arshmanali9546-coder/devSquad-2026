@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Socket.io Test</title>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    #log { background: #f4f4f4; padding: 10px; border: 1px solid #ddd; height: 300px; overflow-y: auto; }
+  </style>
+</head>
+<body>
+  <h1>Test WebSockets</h1>
+  <label>User ID: <input type="text" id="userId" placeholder="Enter your Object ID"/></label>
+  <button onclick="connect()">Connect</button>
+  <h3>Logs</h3>
+  <div id="log"></div>
+
+  <script>
+    let socket;
+    function log(msg) {
+      const logDiv = document.getElementById('log');
+      logDiv.innerHTML += `<p>${new Date().toLocaleTimeString()} - ${msg}</p>`;
+      logDiv.scrollTop = logDiv.scrollHeight;
+    }
+
+    function connect() {
+      const userId = document.getElementById('userId').value;
+      if (!userId) return alert('Enter a user id');
+
+      if (socket) socket.disconnect();
+
+      socket = io('http://localhost:3000', {
+        query: { userId: userId }
+      });
+
+      socket.on('connect', () => {
+        log(`Connected with socket ID: ${socket.id}`);
+      });
+
+      socket.on('newComment', (data) => {
+        log(`<strong>New Comment on Post ${data.postId}:</strong> ${JSON.stringify(data.comment)}`);
+      });
+
+      socket.on('newReply', (data) => {
+        log(`<strong>New Reply to your comment!</strong> ${JSON.stringify(data.reply)}`);
+      });
+
+      socket.on('newLike', (data) => {
+        log(`<strong>New Like on your comment ${data.commentId} from user ${data.likerId}!</strong>`);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+.explore-catalog {
+  margin-top: 80px;
+  margin-bottom: 80px;
+}
+
+.catalog-container {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  gap: 60px;
+}
+
+.catalog-left {
+  flex: 1.2;
+  background: linear-gradient(135deg, #12122b 0%, #080814 100%);
+  border-radius: 20px;
+  padding: 60px 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 320px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+/* Blue ambient glow behind the image stack */
+.catalog-left::after {
+  content: '';
+  position: absolute;
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 100px;
+  background: rgba(60, 60, 255, 0.4);
+  filter: blur(60px);
+  z-index: 0;
+}
+
+.images-stack {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.catalog-img-wrapper {
+  width: 130px;
+  aspect-ratio: 3 / 4;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.9);
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.catalog-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Precise fan-out positioning matching the screenshot overlap direction */
+.item-1 {
+  z-index: 1;
+  transform: translateX(45px) rotate(-8deg) translateY(-15px);
+}
+
+.item-2 {
+  z-index: 2;
+  transform: translateX(15px) rotate(-3deg) translateY(-5px);
+}
+
+.item-3 {
+  z-index: 3;
+  transform: translateX(-15px) rotate(3deg) translateY(5px);
+}
+
+.item-4 {
+  z-index: 4;
+  transform: translateX(-45px) rotate(8deg) translateY(15px);
+}
+
+.catalog-img-wrapper:hover {
+  transform: translateY(-10px) scale(1.05) !important;
+  z-index: 10 !important;
+}
+
+.catalog-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.catalog-heading {
+  font-size: 1.7rem;
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+
+.catalog-desc {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+  max-width: 380px;
+}
+
+@media (max-width: 1024px) {
+  .catalog-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .catalog-img-wrapper {
+    width: 100px;
+  }
+}
